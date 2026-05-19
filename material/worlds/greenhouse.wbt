@@ -1,0 +1,1011 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/plants/protos/PottedTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/UnevenTerrain.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/tables/protos/Desk.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/computers/protos/Laptop.proto"
+
+# Custom PROTOs
+EXTERNPROTO "../protos/Pioneer3at.proto"
+
+WorldInfo {
+  basicTimeStep 8 # simulation runs at 125 Hz (real-time)
+}
+Viewpoint {
+  orientation 0.013790292747234836 -0.9990403303527587 -0.04157218005585172 5.64181189199102
+  position -1.8718358810640512 -0.0767834525973316 1.7980351054248354
+  follow "Pioneer 3-AT"
+  followType "Mounted Shot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+  luminosity 0
+}
+UnevenTerrain {
+  size 50 50 0
+}
+Fog {
+  visibilityRange 40
+}
+DEF WALLS Group {
+  children [
+    Solid {
+      translation 7 2.5 1.5
+      rotation 0 1 0 -1.5707996938995747
+      children [
+        Shape {
+          appearance DEF WALL_APPEAR PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry DEF WALL_GEOM Plane {
+            size 3 9
+          }
+        }
+      ]
+      name "wall1"
+      boundingObject USE WALL_GEOM
+    }
+    Solid {
+      translation -1.3 2.5 1.5
+      rotation 0.70710578118615 -3.390508950807168e-09 0.707107781185531 3.14159
+      children [
+        Shape {
+          appearance USE WALL_APPEAR
+          geometry USE WALL_GEOM
+        }
+      ]
+      name "wall2"
+      boundingObject USE WALL_GEOM
+    }
+    Solid {
+      translation 2.75 6.75 1.5
+      rotation -0.5773482691869614 0.57735126918836 -0.57735126918836 -2.094395307179586
+      children [
+        Shape {
+          appearance USE WALL_APPEAR
+          geometry USE WALL_GEOM
+        }
+      ]
+      name "wall3"
+      boundingObject USE WALL_GEOM
+    }
+    Solid {
+      translation 2.75 -1.5 1.5
+      rotation 0.5773496025232256 0.5773506025225371 0.5773506025225371 -2.094395307179586
+      children [
+        Shape {
+          appearance USE WALL_APPEAR
+          geometry USE WALL_GEOM
+        }
+      ]
+      name "wall4"
+      boundingObject USE WALL_GEOM
+    }
+    Solid {
+      translation 2.75 2.47 2.5
+      rotation 0.7071067811864172 0.7071067811864172 6.072858120759299e-07 3.14159
+      children [
+        Shape {
+          appearance USE WALL_APPEAR
+          geometry DEF CEIL_GEOM Plane {
+            size 8 8
+          }
+        }
+      ]
+      name "ceiling"
+      boundingObject USE CEIL_GEOM
+    }
+  ]
+}
+DEF BASE_STATION Group {
+  children [
+    Desk {
+      translation 2.95843 6.21702 0
+      rotation 0 0 1 -1.5707953071795862
+    }
+    Laptop {
+      translation 3.2349 6.23297 0.71
+      rotation 0 0 1 -2.094395307179586
+    }
+  ]
+}
+Robot {
+  children [
+    Emitter {
+      channel 13
+    }
+    Receiver {
+      channel 13
+    }
+  ]
+  name "supervisor"
+  controller "supervisor"
+  supervisor TRUE
+}
+DEF ROBOT Pioneer3at {
+  controller "controller"
+  extensionSlot [
+    LightSensor {
+      translation 0 0 0.28
+      rotation 0 1 0 -1.5707996938995747
+      children [
+        DEF SHAPE_LIGHT_SENSOR Group {
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.929412 0.831373 0
+                roughness 1
+                metalness 0.3
+              }
+              geometry Box {
+                size 0.02 0.04 0.04
+              }
+            }
+            Transform {
+              translation 0.01 0 0
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.1 0.2 0.3
+                  }
+                  geometry Sphere {
+                    radius 0.015
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+      lookupTable [
+        0 0 0
+        100 100 0
+      ]
+    }
+    GPS {
+    }
+    Accelerometer {
+    }
+    Gyro {
+    }
+    Receiver {
+      translation 0 0 0.3
+      rotation 0 1 0 -1.5707996938995747
+      type "infra-red"
+      aperture 1
+    }
+    Receiver {
+      name "receiver_private"
+      description "This receiver allows to receive the robot's ground truth pose from the supervisor over radio chanel 13."
+      channel 13
+    }
+    Emitter {
+      name "emitter_private"
+      description "This emitter allows to send the state estimate to the supervisor over radio chanel 13."
+      channel 13
+    }
+  ]
+}
+Robot {
+  translation 1.79621 -0.115357 1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.729412 0.741176 0.713726
+        baseColorMap ImageTexture {
+          url [
+            "../protos/board_texture.jpg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.05 0.05 0.01
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.009 1.5 0.009
+      }
+    }
+    Emitter {
+      rotation 0 1 0 1.5707996938995747
+      type "infra-red"
+      range 3
+      maxRange 5
+      aperture 1
+    }
+  ]
+  name "static_sensor0"
+  controller "static_node"
+  controllerArgs [
+    "0"
+  ]
+  supervisor TRUE
+}
+Robot {
+  translation 4.62 1.21 1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.729412 0.741176 0.713726
+        baseColorMap ImageTexture {
+          url [
+            "../protos/board_texture.jpg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.05 0.05 0.01
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.009 1.5 0.009
+      }
+    }
+    Emitter {
+      rotation 0 1 0 1.5707996938995747
+      type "infra-red"
+      range 3
+      maxRange 5
+      aperture 1
+    }
+  ]
+  name "static_sensor1"
+  controller "static_node"
+  controllerArgs [
+    "1"
+  ]
+  supervisor TRUE
+}
+Robot {
+  translation 1.30989 2.56938 1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.729412 0.741176 0.713726
+        baseColorMap ImageTexture {
+          url [
+            "../protos/board_texture.jpg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.05 0.05 0.01
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.009 1.5 0.009
+      }
+    }
+    Emitter {
+      rotation 0 1 0 1.5707996938995747
+      type "infra-red"
+      range 3
+      maxRange 5
+      aperture 1
+    }
+  ]
+  name "static_sensor2"
+  controller "static_node"
+  controllerArgs [
+    "2"
+  ]
+  supervisor TRUE
+}
+Robot {
+  translation 4.06932 3.90368 1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.729412 0.741176 0.713726
+        baseColorMap ImageTexture {
+          url [
+            "../protos/board_texture.jpg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.05 0.05 0.01
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.009 1.5 0.009
+      }
+    }
+    Emitter {
+      rotation 0 1 0 1.5707996938995747
+      type "infra-red"
+      range 3
+      maxRange 5
+      aperture 1
+    }
+  ]
+  name "static_sensor3"
+  controller "static_node"
+  controllerArgs [
+    "3"
+  ]
+  supervisor TRUE
+}
+DEF STATE_ESTIMATE Transform {
+  children [
+    Group {
+      children [
+        Transform {
+          translation 0.25 0 0.05
+          rotation 0 1 0 1.5707996938995747
+          children [
+            Shape {
+              appearance DEF STATE_ESTIMATE_APPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.305882 0.603922 0.0235294
+                }
+              }
+              geometry Cylinder {
+                height 0.5
+                radius 0.02
+              }
+            }
+          ]
+        }
+        Transform {
+          translation 0.5 0 0.05
+          rotation 0 1 0 1.5707996938995747
+          children [
+            Shape {
+              appearance USE STATE_ESTIMATE_APPEARANCE
+              geometry Cone {
+                bottomRadius 0.05
+                height 0.1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+DEF POTTED_TREES Group {
+children [
+
+PottedTree {
+    translation 0.10584314075805984 -0.5899764187449166 0
+    rotation 0 0 1 0.6456813346495229
+    name "potted tree 0"
+}
+
+PottedTree {
+    translation 0.4639003079291776 -0.4499681927567155 0
+    rotation 0 0 1 0.9166797476244106
+    name "potted tree 1"
+}
+
+PottedTree {
+    translation 1.2570053050515353 -0.6727035812446547 0
+    rotation 0 0 1 2.9132790442663943
+    name "potted tree 2"
+}
+
+PottedTree {
+    translation 1.8759671117914665 -0.7258814809640768 0
+    rotation 0 0 1 0.1815521352435825
+    name "potted tree 3"
+}
+
+PottedTree {
+    translation 2.4456622635088197 -0.6317487475260758 0
+    rotation 0 0 1 -2.695259936440876
+    name "potted tree 4"
+}
+
+PottedTree {
+    translation 3.02905872924724 -0.5631289281939907 0
+    rotation 0 0 1 2.324854893342369
+    name "potted tree 5"
+}
+
+PottedTree {
+    translation 3.689644744389456 -0.6807737395648702 0
+    rotation 0 0 1 -2.3984525187550108
+    name "potted tree 6"
+}
+
+PottedTree {
+    translation 4.1423547232959725 -0.5934609537507076 0
+    rotation 0 0 1 2.7939372061654035
+    name "potted tree 7"
+}
+
+PottedTree {
+    translation 4.6468206110499555 -0.5519572106839459 0
+    rotation 0 0 1 -1.479340718682099
+    name "potted tree 8"
+}
+
+PottedTree {
+    translation 5.385471029145443 -0.42284130744139825 0
+    rotation 0 0 1 0.4299831820437712
+    name "potted tree 9"
+}
+
+PottedTree {
+    translation 0.002745511038086764 0.621922422496125 0
+    rotation 0 0 1 0.7043181980071953
+    name "potted tree 10"
+}
+
+PottedTree {
+    translation 0.6339864022817591 0.6723897637568501 0
+    rotation 0 0 1 1.1424106318740046
+    name "potted tree 11"
+}
+
+PottedTree {
+    translation 1.1467328551421931 0.352880529766411 0
+    rotation 0 0 1 1.2417534264905203
+    name "potted tree 12"
+}
+
+PottedTree {
+    translation 1.8105231919601525 0.5806241690845891 0
+    rotation 0 0 1 1.072149355233245
+    name "potted tree 13"
+}
+
+PottedTree {
+    translation 2.3767603909555226 0.6046545874136997 0
+    rotation 0 0 1 -1.1596978735950747
+    name "potted tree 14"
+}
+
+PottedTree {
+    translation 3.0597426809188235 0.36001928308893266 0
+    rotation 0 0 1 -0.38577806849661256
+    name "potted tree 15"
+}
+
+PottedTree {
+    translation 3.5694208690949005 0.584288854758322 0
+    rotation 0 0 1 0.9620079809710615
+    name "potted tree 16"
+}
+
+PottedTree {
+    translation 4.1864436206585145 0.40181438502316597 0
+    rotation 0 0 1 -1.6058213652266506
+    name "potted tree 17"
+}
+
+PottedTree {
+    translation 4.746272006328379 0.7080353746788893 0
+    rotation 0 0 1 -1.9064292470310176
+    name "potted tree 18"
+}
+
+PottedTree {
+    translation 5.467182717731337 0.5813116369394146 0
+    rotation 0 0 1 -2.5314873442184376
+    name "potted tree 19"
+}
+
+PottedTree {
+    translation -0.001690933700319292 2.0142497805795627 0
+    rotation 0 0 1 2.995578264352477
+    name "potted tree 20"
+}
+
+PottedTree {
+    translation 0.6885593899489363 2.047017014570818 0
+    rotation 0 0 1 -2.8953684930766395
+    name "potted tree 21"
+}
+
+PottedTree {
+    translation 1.161940674379142 1.8955888251019295 0
+    rotation 0 0 1 -1.2808889156533916
+    name "potted tree 22"
+}
+
+PottedTree {
+    translation 1.7787823286111468 1.8388878794007533 0
+    rotation 0 0 1 -0.5387014931470011
+    name "potted tree 23"
+}
+
+PottedTree {
+    translation 2.4106455685352253 1.8897328595687608 0
+    rotation 0 0 1 0.4184692785075472
+    name "potted tree 24"
+}
+
+PottedTree {
+    translation 3.0102600262899477 1.6911492972618956 0
+    rotation 0 0 1 -2.5513470166434065
+    name "potted tree 25"
+}
+
+PottedTree {
+    translation 3.643745433730652 1.9693474366136117 0
+    rotation 0 0 1 -1.139964892224044
+    name "potted tree 26"
+}
+
+PottedTree {
+    translation 4.149700142068074 2.0071745616653063 0
+    rotation 0 0 1 1.3592239104610107
+    name "potted tree 27"
+}
+
+PottedTree {
+    translation 4.747752171049087 1.8631725502853378 0
+    rotation 0 0 1 0.5435768008796997
+    name "potted tree 28"
+}
+
+PottedTree {
+    translation 5.455515045105019 1.8142820762747047 0
+    rotation 0 0 1 2.904016275828597
+    name "potted tree 29"
+}
+
+PottedTree {
+    translation 0.02793974638382759 3.0195634470584167 0
+    rotation 0 0 1 0.5783165102116521
+    name "potted tree 30"
+}
+
+PottedTree {
+    translation 0.5132678651029684 3.3065740916662367 0
+    rotation 0 0 1 2.844705937003601
+    name "potted tree 31"
+}
+
+PottedTree {
+    translation 1.270726774269579 3.223011274628148 0
+    rotation 0 0 1 1.2533652517617746
+    name "potted tree 32"
+}
+
+PottedTree {
+    translation 1.85445117702641 3.1621265688010975 0
+    rotation 0 0 1 -0.6502736084876624
+    name "potted tree 33"
+}
+
+PottedTree {
+    translation 2.4124964986846114 3.3964958554725575 0
+    rotation 0 0 1 2.398514016837294
+    name "potted tree 34"
+}
+
+PottedTree {
+    translation 3.0659785183601698 3.390984547119701 0
+    rotation 0 0 1 0.008321337062950018
+    name "potted tree 35"
+}
+
+PottedTree {
+    translation 3.607614725562217 3.310298404516706 0
+    rotation 0 0 1 -0.4784328401151483
+    name "potted tree 36"
+}
+
+PottedTree {
+    translation 4.185535584572405 3.258001736052881 0
+    rotation 0 0 1 -1.2467421964448875
+    name "potted tree 37"
+}
+
+PottedTree {
+    translation 4.723770900090856 3.395409506223702 0
+    rotation 0 0 1 0.7415128095060171
+    name "potted tree 38"
+}
+
+PottedTree {
+    translation 5.335787099810157 3.2186307073953064 0
+    rotation 0 0 1 -1.2674295257515085
+    name "potted tree 39"
+}
+
+PottedTree {
+    translation 0.11537652158882308 4.772077218715164 0
+    rotation 0 0 1 0.4669993115241402
+    name "potted tree 40"
+}
+
+PottedTree {
+    translation 0.6774826752333394 4.745104440725367 0
+    rotation 0 0 1 -0.43091067882464307
+    name "potted tree 41"
+}
+
+PottedTree {
+    translation 1.1839197977429172 4.670368459369459 0
+    rotation 0 0 1 -0.40297255924587816
+    name "potted tree 42"
+}
+
+PottedTree {
+    translation 1.8053838436140783 4.567228081931678 0
+    rotation 0 0 1 1.2810697524024874
+    name "potted tree 43"
+}
+
+PottedTree {
+    translation 2.4225855318693377 4.38508988141237 0
+    rotation 0 0 1 -2.363608756614954
+    name "potted tree 44"
+}
+
+PottedTree {
+    translation 3.021625636026841 4.61122221789449 0
+    rotation 0 0 1 0.43417274557846985
+    name "potted tree 45"
+}
+
+PottedTree {
+    translation 3.5583259284161177 4.527554818950849 0
+    rotation 0 0 1 1.2404815666364142
+    name "potted tree 46"
+}
+
+PottedTree {
+    translation 4.304415207656276 4.495386983632778 0
+    rotation 0 0 1 2.3020480470850453
+    name "potted tree 47"
+}
+
+PottedTree {
+    translation 4.753805035533281 4.630887378693773 0
+    rotation 0 0 1 0.13217689501470797
+    name "potted tree 48"
+}
+
+PottedTree {
+    translation 5.360333746091048 4.3729713476561125 0
+    rotation 0 0 1 2.6897140933814327
+    name "potted tree 49"
+}
+]
+}
+
+DEF LIGHTS Group {
+children [
+
+Transform {
+    translation 0.8999999999999999 0.0 2.475
+    children [
+    DEF LIGHT_0 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 2.6999999999999997 0.0 2.475
+    children [
+    DEF LIGHT_1 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 4.5 0.0 2.475
+    children [
+    DEF LIGHT_2 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 0.8999999999999999 1.3 2.475
+    children [
+    DEF LIGHT_3 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 2.6999999999999997 1.3 2.475
+    children [
+    DEF LIGHT_4 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 4.5 1.3 2.475
+    children [
+    DEF LIGHT_5 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 0.8999999999999999 2.6 2.475
+    children [
+    DEF LIGHT_6 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 2.6999999999999997 2.6 2.475
+    children [
+    DEF LIGHT_7 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 4.5 2.6 2.475
+    children [
+    DEF LIGHT_8 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 0.8999999999999999 3.9000000000000004 2.475
+    children [
+    DEF LIGHT_9 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 2.6999999999999997 3.9000000000000004 2.475
+    children [
+    DEF LIGHT_10 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+
+Transform {
+    translation 4.5 3.9000000000000004 2.475
+    children [
+    DEF LIGHT_11 SpotLight {
+        location 0 0 0.025
+        direction 0 0 -1
+        attenuation 0 0 1
+        beamWidth 0.2
+        cutOffAngle 0.5
+        intensity 6
+        radius 3
+    }
+    Shape {
+        appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+        emissiveColor 1 1 1
+        }
+        geometry Box {
+        size 0.2 0.2 0.05
+        }
+    }
+    ]
+}
+]
+}
