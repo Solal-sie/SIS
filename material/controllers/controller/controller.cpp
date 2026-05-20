@@ -207,11 +207,11 @@ int main(int argc, char **argv) {
     
 	fsm(ps_values, lws, rws);
     
-	if (collecting_light){
+	/*if (collecting_light){
 	lws*=0.35;
 	rws*=0.35;
 	}
-    
+    */
 	robot.set_motors_velocity(lws, rws);
 
 	// STATE ESTIMATION MARKER
