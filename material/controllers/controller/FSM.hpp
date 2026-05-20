@@ -17,7 +17,7 @@ int backward_steps = 0;
 
 const int TOTAL_ALLEYS = 4;
 const int WALL_CONFIRM_STEPS = 45;
-const int BACKWARD_DURATION_STEPS = 80;
+const int BACKWARD_DURATION_STEPS = 60;
 
 const double CENTER_WALL_THRESHOLD = 950.0;
 const double SIDE_WALL_THRESHOLD   = 650.0;
@@ -56,18 +56,18 @@ void goForwardBehavior(double* ps_values, double &vel_left, double &vel_right){
 }
 
 void backwardBehavior(double &vel_left, double &vel_right){
-  vel_left = -2.0;
-  vel_right = -2.0;
+  vel_left = -2.0; //-2
+  vel_right = -2.0; //-2
 }
 
 void arcTurnLeftBehavior(double &vel_left, double &vel_right){
-  vel_left = 0.50;
-  vel_right = 2.2;
+  vel_left = 0.70; // 0.5
+  vel_right = 2.5;// 2.2
 }
 
 void arcTurnRightBehavior(double &vel_left, double &vel_right){
-  vel_left = 2.5;
-  vel_right = 0.7;
+  vel_left = 2.5; 
+  vel_right = 0.9;
 }
 
 void stopBehavior(double &vel_left, double &vel_right){
