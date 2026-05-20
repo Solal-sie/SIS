@@ -26,7 +26,7 @@ Response: >5m -> 0, 0m -> 1024
  * @param 	 vel_left     The left velocity
  * @param 	 vel_right    The right velocity
 */
-const double v0 = 3.0;
+const double v0 = 1.05; // 3
 const double MAX_SPEED = 6.4;
 
     
