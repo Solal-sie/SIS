@@ -32,8 +32,8 @@ int main(int argc, char **argv) {
   std::string f_light = "light_detect.csv";
   int f_light_cols = init_csv(f_light, "time, max_light, status, x_est, y_est,");
 
-  bool light_was_high = false;
-  double prev_light = 0.0;
+  //bool light_was_high = false;
+  //double prev_light = 0.0;
   int detected_light_count = 0;
 
   while (robot.step() != -1) {
@@ -43,8 +43,8 @@ int main(int argc, char **argv) {
 	//////////////////////////////
 
 	double  time = robot.get_time();          	// Current time in seconds
-	double* ps_values = robot.get_proximity();	// Measured proximity sensor values
-	double* wheel_rot = robot.get_encoders(); 	// Wheel rotations (left, right)
+	double* ps = robot.get_proximity();	// Measured proximity sensor values
+	//double* wheel_rot = robot.get_encoders(); 	// Wheel rotations (left, right)
 	double  light = robot.get_light_intensity();  // Light intensity
 	double* imu = robot.get_imu();            	// IMU
 
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
     
 	static double last_light_time = -100.0;
     
-	double pose[3] = {0.0, 0.0, 0.0};
+	double pose[4] = {0.0, 0.0, 0.0, 0.0};
 	bool has_gt = robot.get_ground_truth_pose(pose);
     
 	if(light > LIGHT_THRESHOLD &&
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
 	// NAVIGATION
 	double lws = 0.0, rws = 0.0;
     
-	fsm(ps_values, lws, rws);
+	fsm(ps, lws, rws);
     
 	/*if (collecting_light){
 	lws*=0.35;
