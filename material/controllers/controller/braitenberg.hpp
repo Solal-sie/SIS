@@ -26,7 +26,7 @@ Response: >5m -> 0, 0m -> 1024
  * @param 	 vel_left     The left velocity
  * @param 	 vel_right    The right velocity
 */
-const double v0 = 1.05; // 3
+const double v0 = 3; // 3
 const double MAX_SPEED = 6.4;
 
     
@@ -64,7 +64,7 @@ void braitenberg(double* ps, double &vel_left, double &vel_right){
    	 // C'est beaucoup plus facile à multiplier par nos poids.
    	 double norm_sensor = (ps[i] / 1024.0);
   	 
-   	 // printf("%.2f | %.2f\n "  ,  ps[3], ps[4]);
+   	 //printf("%.2f | %.2f                    %.2f | %.2f\n "  ,  ps[0], ps[15], ps[7], ps[8]);
 
    	 if (ps[i] > 950.0) {
    	 // 4. Ajouter l'influence de chaque capteur sur chaque roue
